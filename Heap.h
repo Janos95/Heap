@@ -189,6 +189,8 @@ public:
 
     [[nodiscard]] T const* end() const { return m_data + m_size; }
 
+    [[nodiscard]] T const* data() const { return m_data; }
+
     ~Heap() {
         destruct();
         free(m_data);
