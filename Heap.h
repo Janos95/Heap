@@ -46,7 +46,7 @@ enum class HeapAlgorithm : uint8_t {
 #endif
 };
 
-template<class T, class Comp = MinHeap, HeapAlgorithm algo = HeapAlgorithm::MinMax>
+template<class T, class Comp = MinHeap, HeapAlgorithm algo = HeapAlgorithm::FourAry>
 class Heap {
 public:
 

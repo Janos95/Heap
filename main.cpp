@@ -30,10 +30,29 @@ static void BenchBoth(benchmark::State& state) {
 }
 
 
-BENCHMARK_TEMPLATE(BenchBoth, Heap<int, MinHeap, HeapAlgorithm::StdHeap>)->DenseRange(1, 1<<13, 128);
-BENCHMARK_TEMPLATE(BenchBoth, Heap<int, MinHeap, HeapAlgorithm::TwoAry>)->DenseRange(1, 1<<13, 128);
-BENCHMARK_TEMPLATE(BenchBoth, Heap<int, MinHeap, HeapAlgorithm::FourAry>)->DenseRange(1, 1<<13, 128);
-BENCHMARK_TEMPLATE(BenchBoth, Heap<int, MinHeap, HeapAlgorithm::MinMax>)->DenseRange(1, 1<<13, 128);
+template<class H>
+static void BenchMakeHeap(benchmark::State& state) {
+    std::vector<int> elements(state.range());
+    std::default_random_engine engine;
+    std::uniform_int_distribution<int> uniform;
+    H h(state.range()); /* avoid allocation */
+    std::generate(elements.begin(), elements.end(), [&] { return uniform(engine); });
+    for(auto _ : state) {
+        h.clear();
+        h.insert(elements.begin(), elements.end());
+    }
+}
+
+
+//BENCHMARK_TEMPLATE(BenchBoth, Heap<int, MinHeap, HeapAlgorithm::StdHeap>)->DenseRange(1, 1<<13, 128);
+//BENCHMARK_TEMPLATE(BenchBoth, Heap<int, MinHeap, HeapAlgorithm::TwoAry>)->DenseRange(1, 1<<13, 128);
+//BENCHMARK_TEMPLATE(BenchBoth, Heap<int, MinHeap, HeapAlgorithm::FourAry>)->DenseRange(1, 1<<13, 128);
+//BENCHMARK_TEMPLATE(BenchBoth, Heap<int, MinHeap, HeapAlgorithm::MinMax>)->DenseRange(1, 1<<13, 128);
+
+BENCHMARK_TEMPLATE(BenchMakeHeap, Heap<int, MinHeap, HeapAlgorithm::StdHeap>)->DenseRange(1, 1<<13, 128);
+BENCHMARK_TEMPLATE(BenchMakeHeap, Heap<int, MinHeap, HeapAlgorithm::TwoAry>)->DenseRange(1, 1<<13, 128);
+BENCHMARK_TEMPLATE(BenchMakeHeap, Heap<int, MinHeap, HeapAlgorithm::FourAry>)->DenseRange(1, 1<<13, 128);
+BENCHMARK_TEMPLATE(BenchMakeHeap, Heap<int, MinHeap, HeapAlgorithm::MinMax>)->DenseRange(1, 1<<13, 128);
 
 BENCHMARK(BenchBaseline);
 
