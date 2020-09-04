@@ -8,7 +8,7 @@
 
 
 static void BenchBaseline(benchmark::State& state) {
-    std::vector<int> elements(state.range() + 1);
+    std::vector<int> elements(state.range());
     std::default_random_engine engine;
     std::uniform_int_distribution<int> uniform;
     for (auto _ : state) {
@@ -18,10 +18,10 @@ static void BenchBaseline(benchmark::State& state) {
 
 template<class H>
 static void BenchBoth(benchmark::State& state) {
-    std::vector<int> elements(state.range() + 1);
+    std::vector<int> elements(state.range());
     std::default_random_engine engine;
     std::uniform_int_distribution<int> uniform;
-    H h(state.range() + 1);
+    H h(state.range()); /* avoid allocation */
     std::generate(elements.begin(), elements.end(), [&]{ return uniform(engine); });
     h.insert(elements.begin(), elements.end());
     for (auto _ : state) {
