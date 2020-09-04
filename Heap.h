@@ -14,17 +14,26 @@
 
 #include "MinMaxAndDAryHeap.h"
 
-struct Less {
+struct MinHeap {
+    template<class T>
+    bool operator()(T const& x, T const& y) const {
+        return x > y;
+    }
+};
+
+struct MaxHeap {
     template<class T>
     bool operator()(T const& x, T const& y) const {
         return x < y;
     }
 };
 
-struct Greater {
+template<class Comp>
+struct SwapComp {
+    Comp comp;
     template<class T>
     bool operator()(T const& x, T const& y) const {
-        return x > y;
+        return !comp(x, y);
     }
 };
 
@@ -37,7 +46,7 @@ enum class HeapAlgorithm : uint8_t {
 #endif
 };
 
-template<class T, class Comp = Less, HeapAlgorithm algo = HeapAlgorithm::MinMax>
+template<class T, class Comp = MinHeap, HeapAlgorithm algo = HeapAlgorithm::MinMax>
 class Heap {
 public:
 
@@ -58,7 +67,7 @@ public:
             ::new(static_cast<void*>(p)) T{*it};
 
         if constexpr (algo == HeapAlgorithm::MinMax)
-            make_minmax_heap(m_data, m_data + m_size, m_comp);
+            make_minmax_heap(m_data, m_data + m_size, SwapComp<Comp>{m_comp});
 #ifdef WITH_STD_HEAP
         else if constexpr (algo == HeapAlgorithm::StdHeap)
             std::make_heap(m_data, m_data + m_size, m_comp);
@@ -78,7 +87,7 @@ public:
                 ::new(static_cast<void*>(p)) T{*first};
 
             if constexpr (algo == HeapAlgorithm::MinMax)
-                make_minmax_heap(m_data, m_data + m_size, m_comp);
+                make_minmax_heap(m_data, m_data + m_size, SwapComp<Comp>{m_comp});
 #ifdef WITH_STD_HEAP
             else if constexpr (algo == HeapAlgorithm::StdHeap)
                 std::make_heap(m_data, m_data + m_size, m_comp);
@@ -103,7 +112,7 @@ public:
             std::pop_heap(m_data, m_data + m_size--, m_comp);
         }
 #endif
-        else pop_minmax_heap_min(m_data, m_data + m_size--, m_comp);
+        else pop_minmax_heap_min(m_data, m_data + m_size--, SwapComp<Comp>{m_comp});
 
         return static_cast<T&&>(m_data[m_size]);
     }
@@ -116,12 +125,12 @@ public:
     }
 
     T extractMax() requires (algo == HeapAlgorithm::MinMax) {
-        pop_minmax_heap_max(m_data, m_data + m_size--, m_comp);
+        pop_minmax_heap_max(m_data, m_data + m_size--, SwapComp<Comp>{m_comp});
         return static_cast<T&&>(m_data[m_size]);
     }
 
     template<class... Args>
-    T& emplace(Args&& ... args) {
+    void emplace(Args&& ... args) {
         if(m_capacity == m_size)
             reserve(computeEmplaceCapacity());
 
@@ -134,10 +143,7 @@ public:
             std::push_heap(m_data, m_data + m_size, m_comp);
         }
 #endif
-        else push_minmax_heap(m_data, m_data + m_size, m_comp);
-
-
-        return m_data[m_size - 1];
+        else push_minmax_heap(m_data, m_data + m_size, SwapComp<Comp>{m_comp});
     }
 
     T dummy(T x){
