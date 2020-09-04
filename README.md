@@ -2,6 +2,7 @@
 
 This is a wrapper around the Binary Heap, Quad Heap and Min-Max Heap written by [Malte Skarupke](https://github.com/skarupke/heap)
 and the Heap implementation provided by the stl. See also this [blog post](https://probablydance.com/2020/08/31/on-modern-hardware-the-min-max-heap-beats-a-binary-heap/).
+I only stripped out some includes and tried to make the header as leight weight as possible.
 
 For one extract min and one insert (of a random number) operation I* obtained the following timings:
 ![alt text](https://github.com/Janos95/Heap/blob/master/extract_emplace.png "Plot1")
