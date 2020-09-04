@@ -1,0 +1,3 @@
+[submodule "contrib/benchmark"]
+	path = contrib/benchmark
+	url = https://github.com/google/benchmark.git
