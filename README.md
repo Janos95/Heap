@@ -4,10 +4,18 @@ This is a wrapper around the Binary Heap, Quad Heap and Min-Max Heap written by 
 and the Heap implementation provided by the stl. See also this [blog post](https://probablydance.com/2020/08/31/on-modern-hardware-the-min-max-heap-beats-a-binary-heap/).
 
 For one extract min and one insert (of a random number) operation I* obtained the following timings:
-![alt text](https://github.com/Janos95/Heap/blob/master/plot.png "Plot1")
+![alt text](https://github.com/Janos95/Heap/blob/master/extract_emplace.png "Plot1")
 
 For the make heap operations
 ![alt text](https://github.com/Janos95/Heap/blob/master/make_heap.png "Plot2")
+
+For emplace 
+![alt text](https://github.com/Janos95/Heap/blob/master/emplace.png "Plot3")
+
+and last but not least for just extract ("this benchmark stops and resumes the clock which is induces a relatively big performance hit)
+
+For emplace 
+![alt text](https://github.com/Janos95/Heap/blob/master/extract.png "Plot4")
 
 If you want to run the benchmark yourself, comment out the correct benchmarks in the main.cpp file and run
 
