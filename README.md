@@ -13,8 +13,6 @@ For emplace
 ![alt text](https://github.com/Janos95/Heap/blob/master/emplace.png "Plot3")
 
 and last but not least for just extract ("this benchmark stops and resumes the clock which is induces a relatively big performance hit)
-
-For emplace 
 ![alt text](https://github.com/Janos95/Heap/blob/master/extract.png "Plot4")
 
 If you want to run the benchmark yourself, comment out the correct benchmarks in the main.cpp file and run
