@@ -2,7 +2,9 @@
 
 This is a wrapper around the Binary Heap, Quad Heap and Min-Max Heap written by [Malte Skarupke](https://github.com/skarupke/heap)
 and the Heap implementation provided by the stl. See also this [blog post](https://probablydance.com/2020/08/31/on-modern-hardware-the-min-max-heap-beats-a-binary-heap/).
-I only stripped out some includes and tried to make the header as leight weight as possible.
+I only stripped out some includes and tried to make the header as leight weight as possible :
+the file Heap.h expands to roughly 4k loc after preprocessing while <queue> expands to roughly 23k loc after preprocessing.
+Measuring compile times of a single instantiation of the Heap template vs the std::priority_queue template I got 80ms vs 240ms.
 
 For one extract min and one insert (of a random number) operation I* obtained the following timings:
 ![alt text](https://github.com/Janos95/Heap/blob/master/extract_emplace.png "Plot1")
